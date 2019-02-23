@@ -2,5 +2,6 @@ DROP TABLE IF EXISTS clients;
 
 CREATE TABLE clients (
   ip TEXT PRIMARY KEY,
-  username TEXT NOT NULL
+  username TEXT NOT NULL,
+  drifter INTEGER NOT NULL DEFAULT 0
 );
