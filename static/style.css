@@ -1,0 +1,49 @@
+* {
+	box-sizing: border-box;
+}
+
+*:focus {
+	outline: none;
+}
+
+body {
+	margin: auto;
+	font-family: Arial;
+	background-color: #163277 /* Tihldefargen */
+;
+}
+
+input {
+	text-align: center;
+	background-color: #ECF0F1;
+	border: 2px solid transparent;
+	border-radius: 3px;
+	font-size: 16px;
+	font-weight: 200;
+	padding: 10px 0;
+	width: 250px;
+	transition: border .5s;
+}
+.container::before {
+	opacity: 0;
+}
+.container {
+	animation: fadein 1s;
+    padding: 10px;
+}
+
+@keyframes fadein {
+	from{opacity: 0}
+	to{opacity: 1}
+}
+
+.card {
+	width: 20rem;
+	margin: auto;
+	text-align: center;
+}
+
+.card-img-top {
+	width: 60%;
+	margin: auto;
+}

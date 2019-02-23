@@ -1,0 +1,4 @@
+flask
+simplepam
+pymysql
+python-freeipa

@@ -1,0 +1,13 @@
+{% extends "main.html" %}
+
+{% block body %}
+    <body>
+        <div class="card">
+            <br>
+            <img class="card-img-top" src="{{ url_for('static', filename='TIHLDE-LOGO.png') }}" alt="TIHLDE Logo">
+            <div class="card-body">
+              <h5 class="card-title">You are now authorized. Navigate to any URL</h5>
+            </div>
+        </div>
+    </body>
+{% endblock %}

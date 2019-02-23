@@ -1,0 +1,6 @@
+setup script for IPTABLES
+flask app som motar og serve login requests
+statiske html templates
+backend for oversikt over bruker - IP
+database over bruker -IP
+DHCP notify på lease expirey

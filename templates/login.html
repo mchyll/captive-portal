@@ -1,0 +1,31 @@
+{% extends "main.html" %}
+
+{% block body %}
+    <body>
+        <div class="card">
+            <br>
+            <img class="card-img-top" src="{{ url_for('static', filename='TIHLDE-LOGO.png') }}" alt="TIHLDE Logo">
+            <div class="card-body">
+                <h5 class="card-title">TIHLDE LAN Captive Portal</h5>
+                <form action="/login" class="form-group" method="post">
+                    <input type="text" class="form-control form-control-lg" placeholder = "Username" name="username" value="{{request.form.username}}">
+                    <input type="password" class="form-control form-control-lg" placeholder = "Password" name="password" value="{{request.form.password}}">
+                    <input class="btn btn-primary btn-lg btn-block" type="submit" value="Sign in">
+                </form>
+            </div>
+
+            {% with messages = get_flashed_messages() %}
+	  {% if messages %}
+	    {% for message in messages %}
+		  <div class="alert alert-warning alert-dismissible" role="alert">
+		  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+			{{message}}
+		  </div>
+		{% endfor %}
+	  {% endif %}
+	{% endwith %}
+
+
+        </div>
+    </body>
+{% endblock %}
