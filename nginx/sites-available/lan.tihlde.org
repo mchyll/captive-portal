@@ -1,0 +1,40 @@
+upstream captive_portal_app {
+
+    # TODO: Sett dette til portnummeret som Flask-appen kjører på
+    server localhost:8890;
+}
+
+
+
+# Denne server-configen redirecter all plain HTTP-trafikk til HTTPS for lan.tihlde.org
+
+server {
+
+    listen 80;
+    listen [::]:80;
+    server_name lan.tihlde.org;
+
+    return 301 https://lan.tihlde.org$request_uri;
+}
+
+
+
+# Denne server-configen tar imot HTTPS-trafikk for lan.tihlde.org
+# og videresender forespørselen over plain HTTP til Flask-appen
+
+server {
+
+    listen 443 ssl;
+    listen [::]:443 ssl;
+    server_name lan.tihlde.org;
+
+    root /var/www/lan.tihlde.org;
+
+    location / {
+        proxy_pass http://captive_portal_app;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-Ip $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+}
+
