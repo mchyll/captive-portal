@@ -1,0 +1,11 @@
+# Denne server-configen er en catch-all som redirecter alle HTTP-forespørsler til https://lan.tihlde.org
+
+server {
+
+    listen 80;
+    listen [::]:80;
+    server_name _;
+
+    return 301 https://lan.tihlde.org$request_uri;
+}
+
