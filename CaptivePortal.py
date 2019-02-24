@@ -25,9 +25,6 @@ def admin_page():
 
     ip = request.environ['REMOTE_ADDR']
 
-    #ip = "192.168.1.3"  # Admin
-    #ip = "192.168.1.13"  # bruker
-
     if not db.isAdmin(ip):
         return redirect('/')
 
@@ -63,7 +60,7 @@ def login_page():
         admin_flag = ipa.isAdmin(username, password)
 
         ip = request.environ['REMOTE_ADDR']
-        if not db.setUser(ip, username, password):
+        if not db.setUser(ip, username, admin_flag):
             flash('Database bind failed. Contact Drift.', 'danger')
             return redirect('/')
 

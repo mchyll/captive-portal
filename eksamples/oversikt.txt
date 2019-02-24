@@ -35,3 +35,14 @@ admin (forutser at du har logget inn)
       ta ut alle ip felt fra db
     ban bruker
       legge til bruker i banned_users
+
+
+
+
+Brukere:
+
+helpdesk
+Passord123
+
+admin
+Secret123

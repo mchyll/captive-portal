@@ -94,9 +94,8 @@ def banUser(username):
         cursor,db = getConnection()
         cursor.execute("SELECT ip FROM clients WHERE username = ?", [username])
 
-        for ip in cursor: #might need cursor.fetchall()
+        for ip in cursor.fetchall():
             ip = str(ip)[2:-3]
-            print(ip)
             cursor.execute('DELETE FROM clients WHERE ip = ?', [str(ip)])
 
         cursor.execute('INSERT INTO banned_users VALUES(?)', [username])
