@@ -75,7 +75,7 @@ def login_page():
 
 @app.route('/')
 def home():
-    print(request.environ['REMOTE_ADDR'])
+    print('incoming IP: ',request.environ['REMOTE_ADDR'])
     return render_template('login.html')
 
 
