@@ -1,67 +1,42 @@
 from flask import Flask, render_template, request, flash, redirect
 import sqlite3
 import os
-from ipa_auth import ipa_login, isAdmin, get_admin_group
+import ipa_auth as ipa
+import db
 
 
 app = Flask(__name__)
 
 
 
-def isAdmin():
-    return True
-
-
 def ban_user(user):
+
     # TODO: remove form IPTABLES, and release IP in DHCP
-    try:
-        db_file = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'user-ip.db')
-        db = sqlite3.connect(db_file)
-        cursor = db.cursor()
 
-        user_to_remove = user
-
-        cursor.execute("SELECT ip FROM clients WHERE username = ?", [user_to_remove])
-
-        for ip in cursor.fetchall():
-            ip = str(ip)[2:-3]
-            print(ip)
-            cursor.execute('DELETE FROM clients WHERE ip = ?', [str(ip)])
-
-        cursor.execute('INSERT INTO banned_users VALUES(?)', [user_to_remove])
-
-        db.commit()
-        return True
-    except Exception as e:
-        print(e)
-        return False
+    db.banUser(user)
 
 
 
 @app.route('/admin', methods=["GET"])
 def admin_page():
-<<<<<<< HEAD
-    if not isAdmin():
-        return redirect('/login')
-=======
->>>>>>> ab91858efadea1b528b6f7eddeeaf9623f806b6c
 
-    db_file = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'user-ip.db')
-    db = sqlite3.connect(db_file)
-    cursor = db.cursor()
+    # TODO: get requesting IP
 
-    cursor.execute("SELECT * FROM clients")
-    data = cursor.fetchall()
+    ip = "192.168.1.3"  # Admin
+    #ip = "192.168.1.13"  # bruker
 
-    cursor.execute("SELECT * FROM banned_users")
-    banned = cursor.fetchall()
+    if not db.isAdmin(ip):
+        return redirect('/')
 
+    data = db.getUserList()
+    banned = db.getBanList()
     return render_template('admin.html', data=data, banned=banned)
 
 
 @app.route('/admin', methods=["POST"])
 def ban_request():
     user = request.form['user']
+
     if ban_user(user):
         flash('Ban successful.','success')
         return redirect('/admin')
@@ -73,36 +48,34 @@ def ban_request():
 
 @app.route('/login', methods=["GET", "POST"])
 def login_page():
-    # TODO: check if the user is in the banned users list
-<<<<<<< HEAD
-    if isBanned():
-        flash('User is banned.', 'danger')
-        return redirect('/')
-    # TODO: sjekk mot ipa
-=======
+
     username = request.form['username']
     password = request.form['password']
 
-    if(ipa_login(username, password)):
+    if db.isBanned(username):
+        flash('User is banned.', 'danger')
+        return redirect('/')
+
+    if ipa.valid_login(username, password):
+        admin_flag = ipa.isAdmin(username, password)
+
+        # TODO: get IP from request
+        ip = 'testIP'
+        if not db.setUser(ip, username, password):
+            flash('Database bind failed. Contact Drift.', 'danger')
+            return redirect('/')
+
+        # TODO: add IP to iptables
+
+
         return render_template("home.html")
     else:
-        return render_template('login.html')
-
-    if(login_ok[0] == True and login_ok[1] == False):
-        print("User: "+username+" loged in, but is not member of: "+get_admin_group())
-        return render_template("home.html")
-    if(login_ok[0] == True and login_ok[1] == True):
-        print("User: "+username+" loged in and is member of: "+get_admin_group())
-        return redirect('/admin')
-    if(login_ok[0] == False):
-        print("User: "+username+" failed login")
-        return render_template('login.html')
->>>>>>> ab91858efadea1b528b6f7eddeeaf9623f806b6c
-
-    return render_template("home.html")
+        flash('Invalid username or password.', 'danger')
+        return redirect('/')
 
 @app.route('/')
 def home():
+    print(request.environ['REMOTE_ADDR'])
     return render_template('login.html')
 
 

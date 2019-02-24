@@ -18,11 +18,14 @@ if __name__ == '__main__':
     for i in range(1,10):
         cursor.execute('INSERT INTO clients VALUES(?,?,?)', ["192.168.1."+str(i), "Bruker"+str(i), True])
 
-    cursor.execute('INSERT INTO clients VALUES(?,?,?)', ["192.168.1.11", "Bruker5", True])
+    for i in range(11,19):
+        cursor.execute('INSERT INTO clients VALUES(?,?,?)', ["192.168.1."+str(i), "Bruker"+str(i), False])
+
+    cursor.execute('INSERT INTO clients VALUES(?,?,?)', ["192.168.1.40", "Bruker5", True])
     db.commit()
 
     for i in range(20, 25):
-        cursor.execute('INSERT INTO banned_users VALUES(?)', ["Bruker "+str(i)])
+        cursor.execute('INSERT INTO banned_users VALUES(?)', ["Bruker"+str(i)])
     db.commit()
 
 

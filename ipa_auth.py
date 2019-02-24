@@ -12,7 +12,7 @@ def get_admin_group():
     return admin_group
 
 #Tries to login and checks if user is member of admin-group
-def ipa_login(username, password):
+def valid_login(username, password):
     try:
         client = Client(ipa_server, verify_ssl=True, version=ipa_version)
         client.login(username, password)
