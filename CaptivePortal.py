@@ -13,9 +13,9 @@ def ban_user(user):
 
     # TODO: remove form IPTABLES, and release IP in DHCP
 
-    if db.banUser(user)
+    if db.banUser(user):
         return True
-        
+
     return False
 
 
