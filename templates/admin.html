@@ -5,13 +5,13 @@
         <div class="card" style="width: 40rem">
             <div class="card-body" >
                 <h5 class="card-title">TIHLDE LAN Captive Portal Admin panel</h5>
+                <p>Admin users marked in <b style="color:green;">green</b>.</p>
 
                 <table class="table table-striped table-sm table-dark">
                   <thead>
                     <tr>
                       <th scope="col">IP</th>
                       <th scope="col">Username</th>
-                      <th scope="col">Drifter</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -19,8 +19,13 @@
                     {% for item in data %}
                     <tr>
                       <td>{{item[0]}}</td>
-                      <td>{{item[1]}}</td>
-                      <td>{{item[2]}}</td>
+                      <td>
+                        {% if item[2] == 1 %}
+                        <b style="color:green;">{{item[1]}}</b>
+                        {% else %}
+                        {{item[1]}}
+                        {% endif %}
+                      </td>
                       <td>
                         <form action="/admin" class="form-group " method="post" style="margin-bottom: 0em;">
                           <input type="hidden" value={{item[1]}} name="user" />
@@ -68,7 +73,7 @@
 
             </div>
 
-
         </div>
+
     </body>
 {% endblock %}

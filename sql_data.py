@@ -11,19 +11,28 @@ if __name__ == '__main__':
 
     cursor.execute('DROP TABLE IF EXISTS clients')
     cursor.execute('DROP TABLE IF EXISTS banned_users')
-    cursor.execute('CREATE TABLE clients (ip TEXT PRIMARY KEY,username TEXT NOT NULL,drifter INTEGER NOT NULL DEFAULT 0)')
+    cursor.execute('CREATE TABLE clients (ip TEXT PRIMARY KEY,username TEXT NOT NULL,drifter INTEGER NOT NULL DEFAULT 0,sort_number INTEGER NOT NULL)')
     cursor.execute('CREATE TABLE banned_users (username TEXT NOT NULL)')
     db.commit()
 
-    cursor.execute('INSERT INTO clients VALUES(?,?,?)', ["127.0.0.1", "localuser", True])
+    cursor.execute('INSERT INTO clients VALUES(?,?,?,?)', ["127.0.0.1", "localuser", True, 127001])
 
     for i in range(1,10):
-        cursor.execute('INSERT INTO clients VALUES(?,?,?)', ["192.168.1."+str(i), "Bruker"+str(i), True])
+        sortNumber = int("1921681%d" % (i))
+        cursor.execute('INSERT INTO clients VALUES(?,?,?,?)', ["192.168.1."+str(i), "Bruker"+str(i), True, sortNumber])
+
+    cursor.execute('INSERT INTO clients VALUES(?,?,?,?)', ["127.0.0.61", "localuser", True, 1270061])
+
 
     for i in range(11,19):
-        cursor.execute('INSERT INTO clients VALUES(?,?,?)', ["192.168.1."+str(i), "Bruker"+str(i), False])
+        sortNumber = int("1921681%d" % (i))
+        cursor.execute('INSERT INTO clients VALUES(?,?,?,?)', ["192.168.1."+str(i), "Bruker"+str(i), False, sortNumber])
 
-    cursor.execute('INSERT INTO clients VALUES(?,?,?)', ["192.168.1.40", "Bruker5", True])
+
+    cursor.execute('INSERT INTO clients VALUES(?,?,?,?)', ["127.0.0.62", "localuser", True, 1270062])
+
+
+    cursor.execute('INSERT INTO clients VALUES(?,?,?,?)', ["192.168.1.40", "Bruker5", True, 192168140])
     db.commit()
 
     for i in range(20, 25):

@@ -1,3 +1,6 @@
+# Database with client IPs
+user-ip.db
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
