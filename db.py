@@ -56,7 +56,7 @@ def isAdmin(ip):
 def setUser(ip, username, admin):
     try:
         cursor,db = getConnection()
-        cursor.execute('INSERT INTO clients VALUES(?,?,?)', [str(ip), str(username), admin])
+        cursor.execute('INSERT INTO clients VALUES(?,?,?)', [str(ip), str(username), admin, int(''.join(ip.split('.')))])
         db.commit()
         closeConnection(cursor,db)
         return True
@@ -67,7 +67,7 @@ def setUser(ip, username, admin):
 def getUserList():
     try:
         cursor,db = getConnection()
-        cursor.execute("SELECT * FROM clients")
+        cursor.execute("SELECT * FROM clients ORDER BY sort_number")
         data = cursor.fetchall()
         closeConnection(cursor,db)
         return data
