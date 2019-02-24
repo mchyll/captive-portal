@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, flash, redirect
 import sqlite3
 import os
-from ipa_auth import ipa_login, get_admin_group
+from ipa_auth import ipa_login, isAdmin, get_admin_group
 
 
 app = Flask(__name__)
@@ -36,6 +36,7 @@ def ban_user(user):
 
 @app.route('/admin', methods=["GET"])
 def admin_page():
+
     db_file = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'user-ip.db')
     db = sqlite3.connect(db_file)
     cursor = db.cursor()
@@ -67,7 +68,10 @@ def login_page():
     username = request.form['username']
     password = request.form['password']
 
-    login_ok = ipa_login(username, password)
+    if(ipa_login(username, password)):
+        return render_template("home.html")
+    else:
+        return render_template('login.html')
 
     if(login_ok[0] == True and login_ok[1] == False):
         print("User: "+username+" loged in, but is not member of: "+get_admin_group())
