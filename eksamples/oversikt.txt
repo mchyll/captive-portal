@@ -4,3 +4,34 @@ statiske html templates
 backend for oversikt over bruker - IP
 database over bruker -IP
 DHCP notify på lease expirey
+
+
+bruker:
+redirect til /
+  bruker og pw
+    sjekke mot banned Users
+      true:
+        flash u be banned
+    sjekkes mot ipa
+      true:
+      sjekk admin
+        flagg tue/false
+
+      legge til ip og brukernavn og drifter i db
+      forworde i iptables
+
+      false:
+      flash feil bruker/pw
+
+admin (forutser at du har logget inn)
+  gå til /admin
+  sjekkes om spørrende ip er Drifter
+    false: redirect (/)
+    true: render admin_page
+  på ban
+    finne alle ip til ban-bruker
+    ban ip
+      ta ut alle ip fra iptables
+      ta ut alle ip felt fra db
+    ban bruker
+      legge til bruker i banned_users

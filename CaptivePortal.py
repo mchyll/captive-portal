@@ -6,6 +6,10 @@ app = Flask(__name__)
 
 
 
+def isAdmin():
+    return True
+
+
 def ban_user(user):
     # TODO: remove form IPTABLES, and release IP in DHCP
     try:
@@ -33,6 +37,9 @@ def ban_user(user):
 
 @app.route('/admin', methods=["GET"])
 def admin_page():
+    if not isAdmin():
+        return redirect('/login')
+
     db_file = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'user-ip.db')
     db = sqlite3.connect(db_file)
     cursor = db.cursor()
@@ -61,8 +68,12 @@ def ban_request():
 @app.route('/login', methods=["GET", "POST"])
 def login_page():
     # TODO: check if the user is in the banned users list
-    return render_template("home.html")
+    if isBanned():
+        flash('User is banned.', 'danger')
+        return redirect('/')
+    # TODO: sjekk mot ipa
 
+    return render_template("home.html")
 
 @app.route('/')
 def home():
