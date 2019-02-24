@@ -20,8 +20,10 @@ if __name__ == '__main__':
     for i in range(1,10):
         cursor.execute('INSERT INTO clients VALUES(?,?,?)', ["192.168.1."+str(i), "Bruker"+str(i), True])
 
+
     for i in range(11,19):
         cursor.execute('INSERT INTO clients VALUES(?,?,?)', ["192.168.1."+str(i), "Bruker"+str(i), False])
+
 
     cursor.execute('INSERT INTO clients VALUES(?,?,?)', ["192.168.1.40", "Bruker5", True])
     db.commit()
