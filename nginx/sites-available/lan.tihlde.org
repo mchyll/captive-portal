@@ -1,7 +1,7 @@
 upstream captive_portal_app {
 
-    # TODO: Sett dette til portnummeret som Flask-appen kjører på
-    server localhost:8890;
+    # IP og portnummer som Flask-appen kjører på
+    server localhost:5000;
 }
 
 

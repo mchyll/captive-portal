@@ -106,3 +106,31 @@ def banUser(username):
     except:
         closeConnection(cursor,db)
         return False
+
+
+def getIPsForUser(username):
+    """
+    Returns all the IP adresses associated with a user. Returns an empty list
+    if no IPs were found, or if a database error occured.
+
+    :param username: the username to find IPs for
+    :return: a list of IPs, or an empty list if no IPs were found or a database error occured.
+    """
+
+    cursor = None
+    db = None
+    try:
+        cursor, db = getConnection()
+        cursor.execute('SELECT ip FROM clients WHERE username = ?', [username])
+        data = cursor.fetchall()
+
+        return [row[0] for row in data]
+
+    except:
+        return []
+
+    finally:
+        if cursor:
+            cursor.close()
+        if db:
+            db.close()

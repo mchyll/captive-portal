@@ -3,21 +3,20 @@ import sqlite3
 import os
 import ipa_auth as ipa
 import db
-
+import ip_management
 
 app = Flask(__name__)
 
 
-
 def ban_user(user):
-
-    # TODO: remove form IPTABLES, and release IP in DHCP
+    # Disallow internet access for all IPs associated with the user
+    for ip in db.getIPsForUser(user):
+        ip_management.iptables_disallow_ip(ip)
 
     if db.banUser(user):
         return True
 
     return False
-
 
 
 @app.route('/admin', methods=["GET"])
@@ -64,8 +63,8 @@ def login_page():
             flash('Database bind failed. Contact Drift.', 'danger')
             return redirect('/')
 
-        # TODO: add IP to iptables
-
+        # Allow the client IP address to access the internet
+        ip_management.iptables_allow_ip(ip)
 
         return render_template("home.html")
     else:

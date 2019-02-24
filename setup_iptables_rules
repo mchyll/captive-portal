@@ -6,23 +6,12 @@ IP_ADDRESS=10.0.0.10  # the ip address of the captive portal (it can be the IP o
 
 
 # Allow TCP DNS
-iptables -A FORWARD -i $IFACE -p tcp --dport 53 -j ACCEPT
+iptables -A FORWARD -i ${IFACE} -p tcp --dport 53 -j ACCEPT
 # Allow UDP DNS
-iptables -A FORWARD -i $IFACE -p udp --dport 53 -j ACCEPT
-# Allow traffic to captive portal
-iptables -A FORWARD -i $IFACE -p tcp --dport $PORT -d $IP_ADDRESS -j ACCEPT
+iptables -A FORWARD -i ${IFACE} -p udp --dport 53 -j ACCEPT
+# Allow HTTP and HTTPS traffic to captive portal
+iptables -A FORWARD -i ${IFACE} -p tcp -m multiport --dports 80,443 -d ${IP_ADDRESS} -j ACCEPT
 # Block all other traffic
-iptables -A FORWARD -i $IFACE -j DROP
-# Redirecting HTTP traffic to captive portal (can't redirect HTTPS traffic, since the cert would be invalid)
-iptables -t nat -A PREROUTING -i $IFACE -p tcp --dport 80 -j DNAT --to-destination $IP_ADDRESS:80
-
-
-# OBS: dette skal bare kjøres når en klient er autentisert og skal få tilgang til internett
-# iptables -t nat -I PREROUTING -s $remote_IP -j ACCEPT
-#iptables -I FORWARD -s $remote_IP -j ACCEPT
-
-# Samme fra glados:
-# iptables -A ALLOWED -d $remote_IP -j ACCEPT -m comment --comment "brukernavnet"
-# iptables -A ALLOWED -s $remote_IP -j ACCEPT -m comment --comment "brukernavnet"
-# iptables -t nat -A ALLOWED -d $remote_IP -j ACCEPT -m comment --comment "brukernavnet"
-# iptables -t nat -A ALLOWED -s $remote_IP -j ACCEPT -m comment --comment "brukernavnet"
+iptables -A FORWARD -i ${IFACE} -j DROP
+# Redirect other HTTP traffic to captive portal (can't redirect HTTPS traffic, since the cert would be invalid)
+iptables -t nat -A PREROUTING -i ${IFACE} -p tcp --dport 80 -j DNAT --to-destination ${IP_ADDRESS}:80
