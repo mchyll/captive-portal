@@ -20,9 +20,9 @@ def ban_user(user):
 @app.route('/admin', methods=["GET"])
 def admin_page():
 
-    # TODO: get requesting IP
+    ip = request.environ['REMOTE_ADDR']
 
-    ip = "192.168.1.3"  # Admin
+    #ip = "192.168.1.3"  # Admin
     #ip = "192.168.1.13"  # bruker
 
     if not db.isAdmin(ip):
@@ -59,8 +59,7 @@ def login_page():
     if ipa.valid_login(username, password):
         admin_flag = ipa.isAdmin(username, password)
 
-        # TODO: get IP from request
-        ip = 'testIP'
+        ip = request.environ['REMOTE_ADDR']
         if not db.setUser(ip, username, password):
             flash('Database bind failed. Contact Drift.', 'danger')
             return redirect('/')
@@ -75,7 +74,6 @@ def login_page():
 
 @app.route('/')
 def home():
-    print('incoming IP: ',request.environ['REMOTE_ADDR'])
     return render_template('login.html')
 
 
