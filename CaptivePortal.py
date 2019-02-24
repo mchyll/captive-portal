@@ -1,6 +1,8 @@
 from flask import Flask, render_template, request, flash, redirect
 import sqlite3
 import os
+from ipa_auth import ipa_login, isAdmin, get_admin_group
+
 
 app = Flask(__name__)
 
@@ -35,10 +37,14 @@ def ban_user(user):
         return False
 
 
+
 @app.route('/admin', methods=["GET"])
 def admin_page():
+<<<<<<< HEAD
     if not isAdmin():
         return redirect('/login')
+=======
+>>>>>>> ab91858efadea1b528b6f7eddeeaf9623f806b6c
 
     db_file = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'user-ip.db')
     db = sqlite3.connect(db_file)
@@ -68,10 +74,30 @@ def ban_request():
 @app.route('/login', methods=["GET", "POST"])
 def login_page():
     # TODO: check if the user is in the banned users list
+<<<<<<< HEAD
     if isBanned():
         flash('User is banned.', 'danger')
         return redirect('/')
     # TODO: sjekk mot ipa
+=======
+    username = request.form['username']
+    password = request.form['password']
+
+    if(ipa_login(username, password)):
+        return render_template("home.html")
+    else:
+        return render_template('login.html')
+
+    if(login_ok[0] == True and login_ok[1] == False):
+        print("User: "+username+" loged in, but is not member of: "+get_admin_group())
+        return render_template("home.html")
+    if(login_ok[0] == True and login_ok[1] == True):
+        print("User: "+username+" loged in and is member of: "+get_admin_group())
+        return redirect('/admin')
+    if(login_ok[0] == False):
+        print("User: "+username+" failed login")
+        return render_template('login.html')
+>>>>>>> ab91858efadea1b528b6f7eddeeaf9623f806b6c
 
     return render_template("home.html")
 
