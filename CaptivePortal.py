@@ -22,7 +22,7 @@ def ban_user(user):
 @app.route('/admin', methods=["GET"])
 def admin_page():
 
-    ip = request.environ['REMOTE_ADDR']
+    ip = request.headers['X-Real-IP']
 
     if not db.isAdmin(ip):
         return redirect('/')
@@ -35,6 +35,11 @@ def admin_page():
 @app.route('/admin', methods=["POST"])
 def ban_request():
     user = request.form['user']
+
+    ip = request.headers['X-Real-IP']
+
+    if not db.isAdmin(ip):
+        return redirect('/')
 
     if ban_user(user):
         flash('Ban successful.','success')
