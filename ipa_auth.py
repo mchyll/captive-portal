@@ -1,3 +1,4 @@
+#!/usr/bin/python
 import json
 from python_freeipa import Client, exceptions
 from python_freeipa.exceptions import Unauthorized

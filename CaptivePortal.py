@@ -1,3 +1,4 @@
+#!/usr/bin/python
 from flask import Flask, render_template, request, flash, redirect, abort
 import os
 import ipa_auth as ipa
