@@ -8,7 +8,7 @@ ipa_version = '2.215'
 # Single point of change
 prod = False
 
-if prod = True:
+if prod == True:
     ipa_server = 'ipa1.tihlde.org'
     admin_group = 'drift'
 else:
