@@ -7,6 +7,7 @@
             <img class="card-img-top" src="{{ url_for('static', filename='TIHLDE-LOGO.png') }}" alt="TIHLDE Logo">
             <div class="card-body">
                 <h5 class="card-title">TIHLDE LAN Captive Portal</h5>
+                <p>Velkommen til TIHLDE LAN! Vennligst logg inn med din Colargolbruker, eller kjøp en gjestebruker. Kontakt Drift dersom du ikke husker passordet ditt</p>
                 <form action="/login" class="form-group" method="post">
                     <input type="text" class="form-control form-control-lg" placeholder = "Username" name="username" value="{{request.form.username}}">
                     <input type="password" class="form-control form-control-lg" placeholder = "Password" name="password" value="{{request.form.password}}">
