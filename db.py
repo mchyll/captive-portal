@@ -1,7 +1,9 @@
 #!/usr/bin/python
 import os
 import sqlite3
+import logger
 
+_log = logger.get_logger()
 
 def getConnection():
     '''
@@ -95,7 +97,8 @@ def setUser(ip, username, admin):
         db.commit()
         closeConnection(cursor,db)
         return True
-    except:
+    except Exception as e:
+        _log.exception('Database error: {}'.format(e))
         closeConnection(cursor,db)
         return False
 

@@ -91,6 +91,7 @@ def login_page():
             flash('An error occurred when trying to give you internet access. Contact Drift.', 'danger')
             return redirect('/')
 
+        log.info('User {} (ip {}) authorized and allowed internet access'.format(username, ip))
         return render_template("home.html")
     else:
         log.warning('Invalid credentials for user {}'.format(username))
