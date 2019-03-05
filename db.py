@@ -91,7 +91,7 @@ def setUser(ip, username, admin):
     '''
     try:
         cursor,db = getConnection()
-        cursor.execute('INSERT INTO clients VALUES(?,?,?)', [str(ip), str(username), admin, int(''.join(ip.split('.')))])
+        cursor.execute('INSERT INTO clients VALUES(?,?,?,?)', [str(ip), str(username), admin, int(''.join(ip.split('.')))])
         db.commit()
         closeConnection(cursor,db)
         return True
