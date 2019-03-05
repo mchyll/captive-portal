@@ -101,7 +101,11 @@ def login_page():
 
 @app.route('/')
 def home():
-    return render_template('login.html')
+    users = [ip[0] for ip in db.getUserList()]
+    if get_client_ip() in users:
+        return render_template("home.html")
+    else:
+        return render_template('login.html')
 
 
 if __name__ == "__main__":
