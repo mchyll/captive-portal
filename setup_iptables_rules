@@ -1,17 +1,36 @@
 #!/bin/bash
 
-# TODO: read these from a config file or cli arguments
-IFACE=eth0            # the interface that captive portal protects
-IP_ADDRESS=10.0.0.10  # the ip address of the captive portal (it can be the IP of IFACE) 
+# TODO: read this from a config file or cli arguments
+IP_ADDRESS=10.0.0.10  # the ip address of Loke
 
 
-# Allow TCP DNS
-iptables -A FORWARD -i ${IFACE} -p tcp --dport 53 -j ACCEPT
-# Allow UDP DNS
-iptables -A FORWARD -i ${IFACE} -p udp --dport 53 -j ACCEPT
+# Policies
+iptables -P INPUT ACCEPT
+iptables -P FORWARD DROP
+iptables -P OUTPUT ACCEPT
+
+iptables -t nat -P PREROUTING ACCEPT
+iptables -t nat -P INPUT ACCEPT
+iptables -t nat -P OUTPUT ACCEPT
+iptables -t nat -P POSTROUTING ACCEPT
+
+# DHCP, client to server
+iptables -A FORWARD -p udp --sport 68 --dport 67 -j ACCEPT
+# DHCP, server to client
+iptables -A FORWARD -p udp --sport 67 --dport 68 -j ACCEPT
+
+# UDP DNS, request from user to server
+iptables -A FORWARD -p udp --dport 53 -m state --state NEW,ESTABLISHED -j ACCEPT
+# UDP DNS, response from server back to user
+iptables -A FORWARD -p udp --sport 53 -m state --state ESTABLISHED -j ACCEPT
+
+# TCP DNS, request from user to server
+iptables -A FORWARD -p tcp --dport 53 -m state --state NEW,ESTABLISHED -j ACCEPT
+# TCP DNS, response from server back to user
+iptables -A FORWARD -p tcp --sport 53 -m state --state ESTABLISHED -j ACCEPT
+
 # Allow HTTP and HTTPS traffic to captive portal
-iptables -A FORWARD -i ${IFACE} -p tcp -m multiport --dports 80,443 -d ${IP_ADDRESS} -j ACCEPT
-# Block all other traffic
-iptables -A FORWARD -i ${IFACE} -j DROP
+iptables -A FORWARD -p tcp -m multiport --dports 80,443 -d ${IP_ADDRESS} -j ACCEPT
+
 # Redirect other HTTP traffic to captive portal (can't redirect HTTPS traffic, since the cert would be invalid)
-iptables -t nat -A PREROUTING -i ${IFACE} -p tcp --dport 80 -j DNAT --to-destination ${IP_ADDRESS}:80
+iptables -t nat -A PREROUTING -p tcp --dport 80 -j DNAT --to-destination ${IP_ADDRESS}:80
