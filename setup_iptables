@@ -1,8 +1,11 @@
 #!/bin/bash
 
-# TODO: read this from a config file or cli arguments
-IP_ADDRESS=10.0.0.10  # the ip address of Loke
+IP_ADDRESS=$1  # the ip address of Loke, read from CLI arguments
 
+
+# Flush existing rules
+iptables -F
+iptables -t nat -F
 
 # Policies
 iptables -P INPUT ACCEPT

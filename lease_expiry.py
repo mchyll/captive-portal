@@ -3,7 +3,7 @@ import os
 import sqlite3
 import sys
 import ip_management
-import logger
+import logging
 
 """
 This script removes an IP address from the database and its iptables rules when its dhcp lease expires.
@@ -11,7 +11,7 @@ It is only meant to be run automatically by isc-dhcp-server on the lease expiry 
 """
 
 if __name__ == '__main__':
-    log = logger.setup_logger()
+    log = logging.getLogger('captiveportal')
 
     if len(sys.argv) < 2:
         log.warning('lease_expiry.py called without an IP address as argument')
