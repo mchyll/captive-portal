@@ -94,6 +94,8 @@ def login_page():
         if not ip_management.iptables_allow_ip(ip):
             log.error('Iptables error when trying to allow client (user {}, ip {})'.format(username, ip))
             flash('En feil oppstod når vi prøvde å gi deg internettilgang. Ta kontakt med Drift.', 'danger')
+            # Roll back the database entry
+            db.removeIpEntry(ip)
             return redirect('/')
 
         log.info('User {} (ip {}) authorized and allowed internet access'.format(username, ip))

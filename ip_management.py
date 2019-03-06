@@ -1,5 +1,8 @@
 #!/usr/bin/python
 import subprocess
+import logging
+
+_log = logging.getLogger('captiveportal')
 
 
 def iptables_allow_ip(ip):
@@ -16,7 +19,8 @@ def iptables_allow_ip(ip):
 
         return True
 
-    except subprocess.CalledProcessError:
+    except:
+        _log.exception('Exception on allowing user internet access')
         return False
 
 
@@ -34,5 +38,6 @@ def iptables_disallow_ip(ip):
 
         return True
 
-    except subprocess.CalledProcessError:
+    except:
+        _log.exception('Exception on disallowing user internet access')
         return False

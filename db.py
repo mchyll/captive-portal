@@ -32,6 +32,7 @@ def closeConnection(cursor,db):
         db.close()
         return True
     except:
+        _log.exception('Database error on connection close: {}'.format(e))
         return False
 
 
@@ -93,6 +94,18 @@ def setUser(ip, username, admin):
     try:
         cursor,db = getConnection()
         cursor.execute('INSERT INTO clients VALUES(?,?,?,?)', [str(ip), str(username), admin, int(''.join(ip.split('.')))])
+        db.commit()
+        closeConnection(cursor,db)
+        return True
+    except Exception as e:
+        _log.exception('Database error: {}'.format(e))
+        closeConnection(cursor,db)
+        return False
+
+def removeIpEntry(ip):
+    try:
+        cursor,db = getConnection()
+        cursor.execute('DELETE FROM clients WHERE ip = ?', [ip])
         db.commit()
         closeConnection(cursor,db)
         return True
