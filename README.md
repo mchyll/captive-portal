@@ -1,26 +1,14 @@
 # CaptivePortal
-A captive portal in Python with python-freeipa authentication used for TIHLDE LAN
+A captive portal with FreeIPA authentication used for TIHLDE LAN.
 
-# A captive portal that uses IPTABLES
+## Installation and setup (*WIP*)
+### Note: These steps do not include setting up a TLS cert in nginx for HTTPS.
+1. Set up bridging of network interfaces, using DHCP to aquire IP address
+2. Install `nginx`, `python3` and python packages: `sudo pip3 install -r requirements.txt`
+3. Adjust config in file `config.yml` and run `sudo python3 setup.py`
+5. Install systemd service file found in `systemd/captiveportal.service`
+6. Enable and start the `captiveportal` systemd service
+7. Enable nginx site configs found in `nginx/sites-available`
 
-## Introduction
-This is a very simple cpative portal that uses IPTABLES and python's BaseHTTPServer.
-When it is executed it blocks all traffic except DNS and redirects all HTTP
-traffic to a login page. When a user enters the correct credentials a new
-IPTABLES entry is added and all the traffic originating from the IP address
-of that user is allowed.
-## Using it
-It is highly recommended to flush IPTABLES before using this scipt. You
-can do that using the following commands
-
-```
-$ sudo iptables -F
-$ sudo iptables -t nat -F
-```
-
-Modify the `PORT`, `IFACE`, and `IP_ADDRESS` variables according to your needs.
-Moreover, if you plan to use this code for something more than proof of concept
-make user you modify the `dummy security check` at line 69 of the script.
-
-Run the script with su priviledges. The username and the password used in the
-provided script are `nikos` and `fotiou` respectively.
+## Note on the event of reboot
+Iptables rules will be lost on reboot. To ensure database and iptables are in sync, run the `setup.py` script after the event of a reboot. **Be warned that this flushes and removes all client entries, meaning all users must re-authenticate.**

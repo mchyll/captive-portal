@@ -1,0 +1,13 @@
+[Unit]
+Description=Captive Portal for TIHLDE LAN
+After=network.target
+
+[Service]
+User=root
+Group=www-data
+WorkingDirectory=/home/drift/CaptivePortal
+ExecStart=/usr/local/bin/uwsgi --ini uwsgi/app.ini
+ExecReload=/bin/bash -c "/bin/echo r > /home/drift/CaptivePortal/uwsgi/fifo"
+
+[Install]
+WantedBy=multi-user.target
