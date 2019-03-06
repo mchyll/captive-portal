@@ -83,6 +83,22 @@ def unban_request():
     return redirect('/admin', code=303)
 
 
+@app.route('/admin/kick', methods=['POST'])
+@require_admin
+def kick_request():
+    ip_to_kick = request.form['ip']
+
+    if ip_management.iptables_disallow_ip(ip_to_kick) and db.removeIpEntry(ip_to_kick):
+        log.info('Kicked client {}'.format(ip_to_kick))
+        flash('Kicked successfully.', 'success')
+
+    else:
+        log.error('Kicking of client {} failed'.format(ip_to_kick))
+        flash('Kicking failed.', 'danger')
+
+    return redirect('/admin', code=303)
+
+
 @app.route('/login', methods=['POST'])
 def login_page():
 

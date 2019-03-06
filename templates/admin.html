@@ -27,6 +27,12 @@
                         {% endif %}
                       </td>
                       <td>
+                        <form action="/admin/kick" class="form-group " method="POST" style="margin-bottom: 0em;">
+                          <input type="hidden" value={{item[0]}} name="ip" />
+                          <input class="btn btn-outline-warning btn-sm" style="width:5rem" type="submit" value="Kick">
+                        </form>
+                      </td>
+                      <td>
                         <form action="/admin/ban" class="form-group " method="post" style="margin-bottom: 0em;">
                           <input type="hidden" value={{item[1]}} name="user" />
                           <input class="btn btn-outline-danger btn-sm" style="width:5rem" type="submit" value="Ban">
