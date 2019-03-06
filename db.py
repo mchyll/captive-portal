@@ -1,9 +1,9 @@
 #!/usr/bin/python
 import os
 import sqlite3
-import logger
+import logging
 
-_log = logger.get_logger()
+_log = logging.getLogger('captiveportal')
 
 
 def getConnection():

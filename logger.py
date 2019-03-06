@@ -10,10 +10,10 @@ def _exception_logger(type, value, tb):
     _logger.exception('Uncaught exception: {}'.format(str(value)))
 
 
-def get_logger(*, log_level='INFO', syslog=True, stdout=False):
+def setup_logger(*, name='captiveportal', log_level='INFO', syslog=True, stdout=False):
     global _logger
     if not _logger:
-        _logger = logging.getLogger('captiveportal')
+        _logger = logging.getLogger(name)
         _logger.setLevel(logging.getLevelName(log_level))
 
         if syslog:

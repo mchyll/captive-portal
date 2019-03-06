@@ -6,12 +6,12 @@
             <br>
             <img class="card-img-top" src="{{ url_for('static', filename='TIHLDE-LOGO.png') }}" alt="TIHLDE Logo">
             <div class="card-body">
-                <h5 class="card-title">TIHLDE LAN Captive Portal</h5>
-                <p>Velkommen til TIHLDE LAN! Vennligst logg inn med din Colargolbruker, eller kjøp en gjestebruker. Kontakt Drift dersom du ikke husker passordet ditt</p>
+                <h5 class="card-title">TIHLDE LAN</h5>
+                <p>Velkommen til TIHLDE LAN! Vennligst logg inn med din Colargolbruker, eller kjøp en midlertidig bruker dersom du er gjest. Ta kontakt med Drift dersom du ikke husker passordet ditt.</p>
                 <form action="/login" class="form-group" method="post">
-                    <input type="text" class="form-control form-control-lg" placeholder = "Username" name="username" value="{{request.form.username}}">
-                    <input type="password" class="form-control form-control-lg" placeholder = "Password" name="password" value="{{request.form.password}}">
-                    <input class="btn btn-primary btn-lg btn-block" type="submit" value="Sign in">
+                    <input type="text" class="form-control form-control-lg" placeholder="Brukernavn" name="username" value="{{request.form.username}}">
+                    <input type="password" class="form-control form-control-lg" placeholder="Passord" name="password" value="{{request.form.password}}">
+                    <input class="btn btn-primary btn-lg btn-block" type="submit" value="Logg inn">
                 </form>
             </div>
 
@@ -19,7 +19,7 @@
               {% if messages %}
                 {% for category,message in messages %}
                 <div class="alert alert-{{category}} alert-dismissible" role="alert">
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Lukk"><span aria-hidden="true">×</span></button>
                 {{message}}
                 </div>
               {% endfor %}

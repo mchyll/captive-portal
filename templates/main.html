@@ -2,11 +2,11 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8">
-	<title>TIHLDE LAN Captive Portal</title>
+	<title>TIHLDE LAN</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link href="{{ url_for('static', filename='bootstrap.min.css') }}" rel="stylesheet">
 	<link href="{{ url_for('static', filename='favicon.ico') }}" rel="shortcut icon">
-    <link rel="stylesheet" href="/static/style.css" type="text/css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" type="text/css">
 </head>
 
 <body>
@@ -18,7 +18,7 @@
 
 </div>
 
-<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='jquery-3.3.1.min.js') }}"></script>
 <script type="text/javascript" src="{{ url_for('static', filename='bootstrap.min.js') }}"></script>
 
 </body>

@@ -4,12 +4,10 @@ import os
 import ipa_auth as ipa
 import db
 import ip_management
-import logger
+import logging
 
 app = Flask(__name__)
-
-# TODO: change this to defaults (syslog=True, stdout=False) in prod
-log = logger.get_logger(syslog=False, stdout=True, log_level='DEBUG')
+log = logging.getLogger('captiveportal')
 
 
 def get_client_ip():
@@ -65,6 +63,11 @@ def ban_request():
         return redirect('/admin')
 
 
+@app.route('/login', methods=['GET'])
+def get_login_page():
+    return redirect('/')
+
+
 @app.route('/login', methods=["POST"])
 def login_page():
 
@@ -82,20 +85,20 @@ def login_page():
         ip = get_client_ip()
         if not db.setUser(ip, username, admin_flag):
             log.error('Database error when trying to add user to clients table (user {}, ip {})'.format(username, ip))
-            flash('Database bind failed. Contact Drift.', 'danger')
+            flash('En databasefeil oppstod. Ta kontakt med Drift.', 'danger')
             return redirect('/')
 
         # Allow the client IP address to access the internet
         if not ip_management.iptables_allow_ip(ip):
             log.error('Iptables error when trying to allow client (user {}, ip {})'.format(username, ip))
-            flash('An error occurred when trying to give you internet access. Contact Drift.', 'danger')
+            flash('En feil oppstod når vi prøvde å gi deg internettilgang. Ta kontakt med Drift.', 'danger')
             return redirect('/')
 
         log.info('User {} (ip {}) authorized and allowed internet access'.format(username, ip))
         return render_template("home.html")
     else:
         log.warning('Invalid credentials for user {}'.format(username))
-        flash('Invalid username or password.', 'danger')
+        flash('Feil brukernavn eller passord.', 'danger')
         return redirect('/')
 
 
@@ -103,12 +106,16 @@ def login_page():
 def home():
     users = [ip[0] for ip in db.getUserList()]
     if get_client_ip() in users:
-        return render_template("home.html")
+        return render_template('home.html')
     else:
         return render_template('login.html')
 
 
 if __name__ == "__main__":
+    import logger
+    # TODO: change this to defaults (syslog=True, stdout=False) in prod
+    logger.setup_logger(syslog=False, stdout=True, log_level='DEBUG')
+
     log.info('Flask application starting')
     app.secret_key = os.urandom(12)
     app.run(host='0.0.0.0')
