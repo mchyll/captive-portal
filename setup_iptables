@@ -12,6 +12,11 @@ iptables -P INPUT ACCEPT
 iptables -P FORWARD DROP
 iptables -P OUTPUT ACCEPT
 
+# Drop all ipv6 traffic, because we're lazy
+ip6tables -P INPUT ACCEPT
+ip6tables -P FORWARD DROP
+ip6tables -P OUTPUT ACCEPT
+
 iptables -t nat -P PREROUTING ACCEPT
 iptables -t nat -P INPUT ACCEPT
 iptables -t nat -P OUTPUT ACCEPT

@@ -20,6 +20,9 @@ if __name__ == '__main__':
         c.close()
         conn.close()
 
+        print('Loading br_netfilter kernel module')
+        subprocess.run(['modprobe', 'br_netfilter'], check=True)
+
         print('Flushing and setting up iptables rules')
         setup_iptables_file = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'setup_iptables')
         subprocess.run([setup_iptables_file, config['ip']], check=True)
