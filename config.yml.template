@@ -1,4 +1,5 @@
 ip: 10.0.0.1
+flask_port: 5000
 
 ipa:
   server: ipa.demo1.freeipa.org
