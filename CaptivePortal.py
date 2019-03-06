@@ -1,13 +1,15 @@
 #!/usr/bin/python
+import logging
+from config import get_config
 from flask import Flask, render_template, request, flash, redirect, abort
 import os
 import ipa_auth as ipa
 import db
 import ip_management
-import logging
 
 app = Flask(__name__)
 log = logging.getLogger('captiveportal')
+config = get_config()
 
 
 def get_client_ip():
@@ -113,8 +115,9 @@ def home():
 
 if __name__ == "__main__":
     import logger
-    # TODO: change this to defaults (syslog=True, stdout=False) in prod
-    logger.setup_logger(syslog=False, stdout=True, log_level='DEBUG')
+    logger.setup_logger(syslog=config['log']['syslog'],
+                        stdout=config['log']['stdout'],
+                        log_level=config['log']['level'])
 
     log.info('Flask application starting')
     app.secret_key = os.urandom(12)

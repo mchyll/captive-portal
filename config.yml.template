@@ -1,0 +1,11 @@
+log:
+  syslog: false
+  stdout: true
+  level: DEBUG
+
+freeipa:
+  server: ipa.demo1.freeipa.org
+  admin_group: admins
+  #server: ipa1.tihlde.org
+  #admin_group: drift
+  version: '2.215'
