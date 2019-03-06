@@ -20,7 +20,7 @@ def iptables_allow_ip(ip):
         return True
 
     except:
-        _log.exception('Exception on allowing user internet access')
+        _log.exception('Exception on allowing client {} internet access'.format(ip))
         return False
 
 
@@ -39,5 +39,5 @@ def iptables_disallow_ip(ip):
         return True
 
     except:
-        _log.exception('Exception on disallowing user internet access')
+        _log.exception('Exception on disallowing client {} internet access'.format(ip))
         return False

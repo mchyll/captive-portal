@@ -103,6 +103,11 @@ def setUser(ip, username, admin):
         return False
 
 def removeIpEntry(ip):
+    """
+    Removes a client from the clients table by IP address.
+
+    :param ip: the IP address to remove from clients table
+    """
     try:
         cursor,db = getConnection()
         cursor.execute('DELETE FROM clients WHERE ip = ?', [ip])
@@ -149,6 +154,22 @@ def getBanList():
         return False
 
 
+def unbanUser(username):
+    """
+    Unbans a user by removing its entry from banned_users table.
+
+    :param username: the username to unban
+    """
+    try:
+        cursor,db = getConnection()
+        cursor.execute('DELETE FROM banned_users WHERE username = ?', [username])
+        db.commit()
+        closeConnection(cursor,db)
+        return True
+    except Exception as e:
+        _log.exception('Database error: {}'.format(e))
+        closeConnection(cursor,db)
+        return False
 
 
 def banUser(username):
