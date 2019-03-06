@@ -5,6 +5,7 @@ import logger
 
 _log = logger.get_logger()
 
+
 def getConnection():
     '''
     Generates a connection to the database file we use to store the ip-user connection
@@ -43,17 +44,15 @@ def isBanned(username):
     '''
     try:
         cursor,db = getConnection()
-        cursor.execute("SELECT * FROM banned_users")
-    except:
+        cursor.execute('SELECT * FROM banned_users WHERE username = ?', [username])
+    except Exception as e:
+        _log.exception('Database error: {}'.format(e))
         closeConnection(cursor,db)
         return False
 
-    for banned_user in cursor:
-        banned_user = str(banned_user)[2:-3]
-
-        if username == banned_user:
-            closeConnection(cursor,db)
-            return True
+    if cursor.fetchone() is not None:
+        closeConnection(cursor,db)
+        return True
 
     closeConnection(cursor,db)
     return False
@@ -69,15 +68,15 @@ def isAdmin(ip):
     try:
         cursor,db = getConnection()
         cursor.execute('SELECT drifter FROM clients WHERE ip = ?', [ip])
-    except:
+    except Exception as e:
+        _log.exception('Database error: {}'.format(e))
         closeConnection(cursor,db)
         return False
 
-    for drifter in cursor:
-        drifter = str(drifter)[1:-2]
-        if drifter == '1':
-            closeConnection(cursor,db)
-            return True
+    result = cursor.fetchone()
+    if result:
+        closeConnection(cursor,db)
+        return result[0]
 
     closeConnection(cursor,db)
     return False
@@ -114,7 +113,8 @@ def getUserList():
         data = cursor.fetchall()
         closeConnection(cursor,db)
         return data
-    except:
+    except Exception as e:
+        _log.exception('Database error: {}'.format(e))
         closeConnection(cursor,db)
         return False
 
@@ -130,7 +130,8 @@ def getBanList():
         banned = cursor.fetchall()
         closeConnection(cursor,db)
         return banned
-    except:
+    except Exception as e:
+        _log.exception('Database error: {}'.format(e))
         closeConnection(cursor,db)
         return False
 
@@ -153,7 +154,8 @@ def banUser(username):
 
         closeConnection(cursor,db)
         return True
-    except:
+    except Exception as e:
+        _log.exception('Database error: {}'.format(e))
         closeConnection(cursor,db)
         return False
 
@@ -176,7 +178,8 @@ def getIPsForUser(username):
 
         return [row[0] for row in data]
 
-    except:
+    except Exception as e:
+        _log.exception('Database error: {}'.format(e))
         return []
 
     finally:

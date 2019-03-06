@@ -9,5 +9,5 @@ CREATE TABLE clients (
 );
 
 CREATE TABLE banned_users (
-  username TEXT NOT NULL
+  username TEXT PRIMARY KEY
 );
