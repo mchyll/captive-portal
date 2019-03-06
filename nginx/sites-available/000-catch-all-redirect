@@ -6,6 +6,6 @@ server {
     listen [::]:80;
     server_name _;
 
-    return 301 https://lan.tihlde.org$request_uri;
+    return 302 https://lan.tihlde.org;
 }
 
