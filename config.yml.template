@@ -1,14 +1,22 @@
+# The IP address of the server running the captive portal
 ip: 10.0.0.1
+
+# The port number on which the Flask app will run. This is *not* used when using uWSGI.
 flask_port: 5000
 
 ipa:
-  server: ipa.demo1.freeipa.org
-  admin_group: admins
-  #server: ipa1.tihlde.org
-  #admin_group: drift
+  # The FreeIPA server which users will authenticate against
+  server: ipa1.tihlde.org
+
+  # Users in this group will be able to access the admin panel
+  admin_group: drift
+
   version: '2.215'
 
 log:
-  syslog: false
+  # Whether to log to syslog and/or stdout
+  syslog: true
   stdout: true
+
+  # Lowest log level to show log messages for
   level: DEBUG
