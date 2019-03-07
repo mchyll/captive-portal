@@ -1,4 +1,4 @@
-# CaptivePortal
+# TIHLDE LAN Captive Portal
 A captive portal with FreeIPA authentication used at TIHLDE LAN parties.
 
 The captive portal runs on a server which acts as a transparent firewall. A router with DHCP server and NAT is at the side of the server connected to the internet, while players at the LAN party is at the other side.
