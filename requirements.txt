@@ -1,3 +1,4 @@
+uwsgi
 flask
 python-freeipa
 pyyaml
