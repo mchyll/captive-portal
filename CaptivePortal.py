@@ -7,10 +7,18 @@ import os
 import ipa_auth as ipa
 import db
 import ip_management
+import logger
 
 app = Flask(__name__)
 log = logging.getLogger('captiveportal')
 config = get_config()
+
+logger.setup_logger(syslog=config['log']['syslog'],
+                    stdout=config['log']['stdout'],
+                    log_level=config['log']['level'])
+
+log.info('Flask application starting')
+app.secret_key = os.urandom(12)
 
 
 def get_client_ip():
@@ -147,12 +155,7 @@ def home(path):
         return render_template('login.html')
 
 
+# This code starts Flask's built-in dev server and should *not* be run when using uWSGI
 if __name__ == "__main__":
-    import logger
-    logger.setup_logger(syslog=config['log']['syslog'],
-                        stdout=config['log']['stdout'],
-                        log_level=config['log']['level'])
-
-    log.info('Flask application starting')
-    app.secret_key = os.urandom(12)
+    log.warning('Flask application running on built-in development server. Consider using uWSGI instead')
     app.run(host='0.0.0.0', port=config['flask_port'])
