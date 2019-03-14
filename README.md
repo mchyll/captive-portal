@@ -9,7 +9,7 @@ The captive portal runs on a server which acts as a transparent firewall. A rout
 1. Set up bridging of network interfaces, using DHCP to aquire IP address
 2. Set DNS entry for `lan.tihlde.org` to local IP of Loke
 3. Install `nginx`, `python3` and python packages: `sudo pip3 install -r requirements.txt`
-4. Copy `config.yml.template` to `config.yml`, adjust the config params and run `sudo python3 setup.py`
+4. Copy `config.yml-default` to `config.yml`, adjust the config params and run `sudo python3 setup.py`
 5. Install systemd service file found in `systemd/captiveportal.service`
 6. Enable and start the `captiveportal` systemd service
 7. Insert paths of TLS certificate and private key issued for `lan.tihlde.org` in the `nginx/sites-available/lan.tihlde.org.conf` config
