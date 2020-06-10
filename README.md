@@ -1,7 +1,7 @@
 # TIHLDE LAN Captive Portal
 A captive portal with FreeIPA authentication used at TIHLDE LAN parties.
 
-The captive portal runs on a server which acts as a transparent firewall. A router with DHCP server and NAT is at the side of the server connected to the internet, while players at the LAN party is at the other side.
+The captive portal runs on a server (called Loke) which acts as a transparent firewall, having separate internet-facing and LAN-facing NICs respectively. Normally, a router with a DHCP server and NAT is on the internet-side of the server, however Loke can also be responsible for DHCP if the network setup requires it. When users connect to the LAN-side network, they're assigned IPs from the DHCP server, but all other outbound traffic apart from DNS is blocked. This captive portal redirects them to a login page for authenticating with their TIHLDE user, which is checked against TIHLDE's FreeIPA user system. When successfully authenticated, all internet-facing traffic for the client's IP is allowed using iptables.
 
 ## Installation and setup
 **Note**: These steps assume the application is installed into `/home/drift/CaptivePortal/`, and that we'll use the domain `lan.tihlde.org` for Loke (the server running the captive portal). This can be changed by changing the relevant paths and names in a few of the files.

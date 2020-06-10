@@ -7,7 +7,8 @@ import logging
 import logger
 
 """
-This script removes an IP address from the database and its iptables rules when its dhcp lease expires.
+This script is only used if Loke handles the DHCP server itself.
+The script removes an IP address from the database and its iptables rules when its dhcp lease expires.
 It is only meant to be run automatically by isc-dhcp-server on the lease expiry event.
 """
 
